@@ -1,0 +1,47 @@
+{
+  "allowed_successor_on_complete_pass": "H4_only",
+  "amendment_id": "qwen35-r18-h3-independent-validator-consistency-amendment-v3",
+  "bound": {
+    "binary64_unit_roundoff": "2^-53",
+    "element_count": 103672,
+    "formula": "B_pair=2*b/(1-b); b=max((1+u)*sqrt(1+epsilon_sum)-1, 1-(1-u)*sqrt(1-epsilon_sum)); epsilon_sum=(1+u)*(1+gamma_(n-1))-1; gamma_(n-1)=((n-1)*u)/(1-(n-1)*u)",
+    "high_precision_decimal": "1.1510126185730684230549368235693935884182021079188570533453842551364243845533590E-11",
+    "minimum_decimal_precision": 80,
+    "upward_rounded_binary64": 1.1510126185730685e-11
+  },
+  "failed_validator": {
+    "failure_closure_sha256": "9946450917786e13cb297b319769d06aa302c0a3b2e62eda5b43df59b69011aa",
+    "job_id": "49858377",
+    "status": "failed_strict_independent_validation"
+  },
+  "forensic": {
+    "closure_sha256": "497be6ced00350270cf77dfe89a15313c1f451b5e416985d12fba4533712e1a4",
+    "maximum_observed_relative_difference": 1.2939715366610095e-14,
+    "scenario_candidate_runs": 8,
+    "status": "diagnostic_complete",
+    "tensor_keys_examined": 3888
+  },
+  "forbidden_changes": [
+    "producer_bytes",
+    "h2_or_h3_manifests",
+    "model_cases_or_seeds",
+    "target_allocation",
+    "loss_normalization",
+    "chunk_candidates",
+    "optimizer_or_clipping_threshold",
+    "h3_numerical_acceptance_thresholds"
+  ],
+  "human_amendment": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h3_validator_consistency_amendment_v3_20260719.md",
+    "sha256": "90d26f74ef51c1ccee8cdbc5e75ae3708a172bc65918912295c07edfd70cc671"
+  },
+  "parent_validator": {
+    "amendment_v1_sha256": "bc648147a2af821544fc30554186c05b0758cb9780bf58887eae88f766b66644",
+    "source_commit": "648e80322f48b1c0d60b2da7306d007aacdfa304"
+  },
+  "required_summary_comparisons": 48,
+  "retry_limit": 1,
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "status": "preregistered_after_diagnosis_before_amended_implementation_or_execution"
+}

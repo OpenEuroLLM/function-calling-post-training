@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "amendment_id": "qwen35-r18-h2-independent-validator-amendment-v1",
+  "status": "preregistered_before_corrected_validator_implementation_or_execution",
+  "protocol_id": "qwen35-hardware-qualification-r18",
+  "protocol_manifest_sha256": "679ad710f0be07f811071b1a56863b8cb851732a0ac8a808f4e5747e9c325ee0",
+  "human_protocol": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h2_validator_amendment_v1_20260719.md",
+    "sha256": "57bc83df87aee2f078407a687348a54a6158f4e21d9bc0c59a2bc6d4756894b4"
+  },
+  "immutable_input": {
+    "report_sha256": "d402d24ad9661f05abfbec02b92c5cb022fc392d953a24920072a4487a08e50d",
+    "report_size_bytes": 253195551,
+    "producer_commit": "1af07d8f498595840034ba1210008058415aee9a",
+    "slurm_job_id": "49845033",
+    "slurm_account": "aifac_f02_434",
+    "slurm_state": "FAILED",
+    "slurm_exit_code": "1:0",
+    "producer_report_status": "passed",
+    "producer_successor_gate_authorized": true,
+    "producer_scientific_training_authorized": false
+  },
+  "observed_validator_failure": {
+    "type": "ValueError",
+    "message": "chunk 128 trajectory 0 step 1 primary: named trajectory parameter order drift",
+    "classification": "json_object_member_order_harness_defect"
+  },
+  "allowed_changes": [
+    "require exact named-parameter key-set equality instead of JSON object iteration-order equality",
+    "validate named metrics in explicit parameter_geometry array order",
+    "add sorted-JSON round-trip and missing-extra-substituted-key tests",
+    "separate immutable producer source identity from corrected validator source identity",
+    "bind amendment-mode validation to the exact immutable input report hash and size"
+  ],
+  "forbidden_changes": [
+    "producer report mutation or regeneration",
+    "production loss or producer implementation changes",
+    "metric definition or acceptance-rule changes",
+    "seed case candidate trajectory or chunk changes",
+    "GPU reexecution for this validation correction",
+    "scientific training or evaluation authorization"
+  ],
+  "execution": {
+    "device": "cpu",
+    "slurm_account": "aifac_f02_434",
+    "automatic_successor": false,
+    "allowed_successor_on_pass": "H3_only",
+    "scientific_training_authorized": false
+  }
+}

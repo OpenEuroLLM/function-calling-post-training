@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "artifact": "qwen35_r18_h3_independent_validator_amendment",
+  "amendment_id": "qwen35-r18-h3-independent-validator-amendment-v1",
+  "status": "preregistered_before_corrected_validator_implementation_or_execution",
+  "parent": {
+    "protocol_id": "qwen35-hardware-qualification-r18-h3-r1",
+    "h3_manifest_sha256": "95aec699d2bab81c5eb3094d2048f997f137faa624dbb7128f92b32134b8abf4",
+    "producer_source_commit": "4c93284ec2b3a215b954802ca5e26b9cab0273b9",
+    "original_validator_sha256": "604790a3bfce36f5774a54787e97f520c1f167d123a7d50d8621a5cc231ee597"
+  },
+  "human_amendment": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h3_validator_amendment_v1_20260719.md",
+    "sha256": "1934d64a3714648a4144f36a1cd2cd445a46ce68e08cab733a2c10fd5daca81d"
+  },
+  "trigger": {
+    "phase": "local_cpu_dry_run_before_independent_leonardo_validation",
+    "exception_type": "ValueError",
+    "exception_message": "H3 predecessor H2 validation does not authorize H3",
+    "failed_condition_expected_key": "allowed_successor",
+    "authoritative_key": "successor_gate_authorized",
+    "h3_tensor_evidence_opened_before_failure": false,
+    "h3_numerical_validation_output_produced": false,
+    "h3_numerical_result_reinterpreted": false
+  },
+  "authoritative_h2_predecessor": {
+    "sha256": "cd01fe72f7f73c3d2496390a8ccbee2718f78b7843208ccc626d1c7a51fed176",
+    "bytes": 2893,
+    "artifact": "qwen35_h2_r18_independent_validation_amended_v1",
+    "schema_version": 1,
+    "status": "passed",
+    "successor_gate_authorized": "H3_only",
+    "scientific_training_authorized": false,
+    "qualification_manifest_sha256": "679ad710f0be07f811071b1a56863b8cb851732a0ac8a808f4e5747e9c325ee0",
+    "nested_validation": {
+      "status": "passed",
+      "successor_gate_authorized": true,
+      "scientific_training_authorized": false,
+      "candidate_count": 4,
+      "trajectory_steps": 3072
+    },
+    "forbidden_top_level_keys": [
+      "allowed_successor"
+    ]
+  },
+  "allowed_implementation_changes": [
+    "replace_the_stale_H2_predecessor_field_check_with_exact_authoritative_schema_validation",
+    "bind_the_amendment_human_manifest_and_preregistration_closure_in_the_validator_and_output",
+    "add_positive_and_adversarial_predecessor_schema_tests",
+    "stage_the_corrected_validator_in_a_new_tracked_files_only_source_root"
+  ],
+  "forbidden_changes": [
+    "R18_or_H3_manifest_bytes",
+    "producer_report_or_tensor_evidence_bytes",
+    "producer_source_identity",
+    "scenarios_cases_seeds_targets_or_chunk_candidates",
+    "loss_or_distributed_normalization_semantics",
+    "numerical_thresholds",
+    "precision_or_optimizer_policy",
+    "no_liger_requirement",
+    "scientific_training_authority"
+  ],
+  "required_tests": {
+    "accept_exact_authoritative_predecessor": true,
+    "reject_hash_drift": true,
+    "reject_status_drift": true,
+    "reject_successor_field_missing_or_drifted": true,
+    "reject_stale_key_insertion": true,
+    "reject_scientific_authorization": true,
+    "reject_qualification_manifest_drift": true,
+    "reject_nested_validation_drift": true,
+    "run_targeted_and_full_pinned_cpu_staging": true
+  },
+  "execution": {
+    "maximum_corrected_independent_validator_attempts": 1,
+    "requires_new_output_directory": true,
+    "requires_new_clean_staged_source_root": true,
+    "producer_artifacts_are_immutable_external_inputs": true,
+    "automatic_successor": false
+  },
+  "allowed_successor_on_complete_pass": "H4_only",
+  "scientific_training_authorized": false
+}

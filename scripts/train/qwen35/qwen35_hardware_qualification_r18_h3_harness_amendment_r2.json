@@ -1,0 +1,70 @@
+{
+  "allowed_implementation_changes": [
+    "bind_LOCAL_RANK_cuda_device_before_nccl_initialization",
+    "pass_explicit_cuda_device_id_to_nccl_process_group_initialization",
+    "rank_zero_only_atomic_output_directory_creation",
+    "broadcast_rank_zero_directory_creation_outcome_to_all_ranks",
+    "bind_this_amendment_and_attempt01_failure_closure_into_producer_and_validator"
+  ],
+  "allowed_successor_on_complete_pass": "H4_only",
+  "artifact": "qwen35_r18_h3_harness_amendment",
+  "automatic_successor": false,
+  "forbidden_changes": [
+    "candidate_chunk_sizes",
+    "candidate_order",
+    "scenario_order",
+    "model_or_case_seeds",
+    "target_allocations",
+    "model_geometry",
+    "loss_or_checkpoint_implementation",
+    "world_size_scaling",
+    "no_sync_placement",
+    "optimizer_or_clipping",
+    "numerical_acceptance",
+    "liger_policy",
+    "failure_policy"
+  ],
+  "human_amendment": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h3_harness_amendment_r2_20260719.md",
+    "sha256": "a95bc1b725af200ce9ff82d099a07c96bdc251b3c725dfe6b5dfb306bd392430"
+  },
+  "parent": {
+    "h3_machine_manifest_sha256": "95aec699d2bab81c5eb3094d2048f997f137faa624dbb7128f92b32134b8abf4",
+    "h3_protocol_id": "qwen35-hardware-qualification-r18-h3-r1",
+    "h3_protocol_sha256": "a50aaeecdb17a48f431902127d7d80b6760df6b1b93a7081c89607902522aaab",
+    "h3_preregistration_closure_sha256": "70fb3569c0b46eab9bbb7474ca8e3f8b09c524b389b80dd0dbe49b82768dae85"
+  },
+  "required_cpu_tests": [
+    "rank_zero_is_sole_directory_creator",
+    "nonowner_accepts_rank_zero_created_directory",
+    "preexisting_directory_fails_all_ranks_coherently",
+    "injected_creation_error_fails_all_ranks_coherently",
+    "broadcast_source_and_strict_status",
+    "cuda_device_binding_precedes_nccl_initialization_with_device_id",
+    "amendment_and_failure_closure_hash_drift_rejection",
+    "four_process_gloo_fresh_directory",
+    "four_process_gloo_preexisting_directory",
+    "complete_pinned_qwen_suite",
+    "clean_source_tree_without_bytecode"
+  ],
+  "retry": {
+    "accelerator": "NVIDIA_A100_SXM_64GB",
+    "account": "aifac_f02_434",
+    "fresh_output_root_required": true,
+    "fresh_source_root_required": true,
+    "maximum_corrected_attempts": 1,
+    "nodes": 1,
+    "ranks": 4
+  },
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "status": "ready_for_corrected_implementation",
+  "trigger": {
+    "attempt01_failure_closure_sha256": "c0ff9961da3d8407d0f4b8b6f44f427bee960a6a0012f797d8c14c5c184cd990",
+    "job_id": "49852000",
+    "numerical_reports_produced": 0,
+    "rank_failure_sha256": "114c03bac867d25a81595d25b4f58dc9e3310bd1d9e99b392c7d0fc3af64e661",
+    "status": "invalid_harness_failure",
+    "tensor_evidence_files_produced": 0
+  }
+}

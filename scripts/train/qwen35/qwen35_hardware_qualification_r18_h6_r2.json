@@ -1,0 +1,137 @@
+{
+  "artifact": "qwen35_r18_h6_common_prefix_strict_trainer_resume_contract",
+  "automatic_successor": false,
+  "base_source": {
+    "commit": "77b8fb7d7e92b4e28db6aa54e304065e5ede36e6",
+    "tree": "cb3a347305e3bc820dcaf43e703a8b436710bf67"
+  },
+  "common_prefix_design": {
+    "continuous_checkpoint_step": 5,
+    "continuous_updates": [
+      1,
+      10
+    ],
+    "reconstructed_resume_prefix_source": "continuous_metrics_steps_1_through_5",
+    "resume_checkpoint": "continuous/checkpoint-5",
+    "resumed_updates": [
+      6,
+      10
+    ]
+  },
+  "comparison": {
+    "atol": 0,
+    "checkpoint_file_bytes_required_equal": false,
+    "deterministic_metric_projection_required_equal": true,
+    "discrete_and_structured_state_required_equal": true,
+    "model_optimizer_scheduler_rng_tensors_required_bit_equal": true,
+    "per_rank_strict_load_audits_required": 4,
+    "rtol": 0,
+    "schedule_cursor_and_pack_sequence_required_equal": true
+  },
+  "execution": {
+    "cuda_event_step_timing": false,
+    "gradient_accumulation_steps": 2,
+    "hardware_profile": false,
+    "maximum_scheduler_steps": 10,
+    "nodes": 1,
+    "per_device_train_batch_size": 1,
+    "ranks": 4,
+    "save_steps": 5,
+    "save_total_limit": 2,
+    "selected_loss_chunk_size": 512,
+    "sequence_length": 32768,
+    "slurm_account": "aifac_f02_434"
+  },
+  "exposure": {
+    "assistant_targets": 602629,
+    "fixed_positions": 2621440,
+    "optimizer_updates": 10,
+    "per_update_assistant_targets": [
+      54778,
+      78125,
+      50730,
+      69201,
+      56143,
+      65752,
+      45663,
+      63992,
+      57005,
+      61240
+    ],
+    "scheduled_packs": 80,
+    "synthetic_packs": 0
+  },
+  "immutable_predecessors": {
+    "h5_final_closure_sha256": "0d38dfdb814ed0facca07ca92fd28421b8fc66b405e755b14cd8b13708580e4a",
+    "h6_r1_attempt01_failure_closure_sha256": "bf6dd4e1be1e2bf3ac3c3ca184061af8cdc17f4015f73a3abf8d80c959690e17",
+    "h6_r1_failed_comparison_sha256": "0784f1a6b94c63775564c0d3166c855e26f2c417356a309055bb6369ad4cce01",
+    "h6_r1_human_protocol_sha256": "2add03918c475fe67066acb9d7b1acad4fb50600f68cd968987cd76e75a87081",
+    "h6_r1_machine_contract_sha256": "376d2a210c35a791b79743f5354808d767303ae422f907ca0fbf0c42b7361e10",
+    "h6_r1_preregistration_closure_sha256": "47ff866893804a86617b700e13cbbe11d2c3d6015df7581f2fb784e94944f335"
+  },
+  "model_and_data": {
+    "arm": "C00",
+    "model_class": "Qwen3_5ForCausalLM",
+    "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "model_type": "qwen3_5_text",
+    "numpy_manifest_sha256": "bb9ddcdafe7cd09d6a947a1e754260398e6ad02cbccd6e575966a36577cea548",
+    "vision_tower_allowed": false
+  },
+  "protocol": {
+    "date": "2026-07-20",
+    "human_path": "methodology/qwen35_hardware_qualification_r18_h6_resume_repair_protocol_r2_20260720.md",
+    "human_sha256": "35ed7330ba4fc111d4c667f0aaf28b8a57e340d2d0dc83c0e5cb2a12c0fa7c9f",
+    "id": "qwen35-hardware-qualification-r18-h6-r2"
+  },
+  "replacement_or_retry_policy": "none_without_new_prospective_amendment_and_retained_failure_closure",
+  "resource_ceiling": {
+    "gpu_hours": 4,
+    "gpu_jobs": 1,
+    "gpus": 4,
+    "maximum_minutes": 60,
+    "nodes": 1
+  },
+  "schedule": {
+    "embedded_schedule_sha256": "6fb941968793bc8d3b11c178279de0be16ffde97837b16401e9d1c457a046281",
+    "entries_sha256": "163db66ee13a7f07659be59f90b91d2a21de7ed9067d841cc2feabf49dd239cd",
+    "file_sha256": "4e8d4a9fb1a1fd0c92abff0321e71355e066c5723f626bed847fd799704e0c2c",
+    "optimizer_updates": 10,
+    "scheduled_packs": 80
+  },
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "source": {
+    "allowed_implementation_paths": [
+      "open_instruct/qwen35_checkpoint_resume.py",
+      "open_instruct/qwen35_qualification_r18_h6_r2.py",
+      "scripts/train/qwen35/leonardo_h6_r18_r2.sbatch",
+      "scripts/train/qwen35/train_qwen35_sft.py",
+      "scripts/train/qwen35/validate_qwen35_h6_r18_r2.py",
+      "tests/test_qwen35_checkpoint_resume.py",
+      "tests/test_qwen35_qualification_r18_h6_r2.py"
+    ],
+    "clean_descendant_required": true
+  },
+  "strict_trainer_model_restore": {
+    "allow_pickle_model_weights": false,
+    "allowed_layouts": [
+      "single_model_safetensors",
+      "indexed_safetensors_shards"
+    ],
+    "allowlisted_duplicate_source_mapping": {
+      "model.language_model.embed_tokens.weight": [
+        "lm_head.weight",
+        "model.embed_tokens.weight"
+      ]
+    },
+    "complete_metadata_preflight_before_copy": true,
+    "missing_or_unexpected_keys_allowed": false,
+    "preserve_live_parameter_objects": true,
+    "require_exact_post_copy_values": true,
+    "require_fp32_source_and_target": true,
+    "require_tied_embeddings_before_and_after": true,
+    "upstream_trainer_strict_false_fallback_allowed": false
+  },
+  "status": "preregistered_after_retained_H6_r1_failure_before_r2_implementation_or_GPU_execution",
+  "successor_on_complete_independent_pass": "H7_only"
+}

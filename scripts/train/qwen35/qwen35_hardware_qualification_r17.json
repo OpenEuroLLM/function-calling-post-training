@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "protocol_id": "qwen35-hardware-qualification-r17",
+  "protocol_date": "2026-07-19",
+  "status": "ready_for_execution",
+  "base_manifest": {
+    "path": "qwen35_hardware_qualification_r16.json",
+    "sha256": "827da32eefdf20839fef364b1bed23afb37122e0c19a981e460324c9d5c1b4f8",
+    "protocol_id": "qwen35-hardware-qualification-r16"
+  },
+  "transformations": {
+    "change_primary_reference_from_full_dense_to_dense_selected": true,
+    "retain_full_dense_as_mandatory_nongating_diagnostic": true,
+    "retain_all_r16_numerical_acceptance_values": true,
+    "retain_r16_historical_direct_cases": true
+  },
+  "overrides": {
+    "protocol_id": "qwen35-hardware-qualification-r17",
+    "protocol_date": "2026-07-19",
+    "source": {
+      "corrective_baseline_commit": "7ec97195b2397bcb90b160d417b8aa08a36cb4f2"
+    },
+    "h2_acceptance": {
+      "protocol_revision": 4,
+      "confirmatory_direct_cases": [
+        {
+          "case_id": "R17-D0",
+          "seed_label": "qwen35-hardware-qualification-r17-h2-direct-0",
+          "seed_sha256": "31dfd726420946bad6aed69c48c48e7748274a1f2bf24bb43032d2128e70caa9",
+          "seed": 836753190,
+          "rows": 73,
+          "supervision_kind": "explicit",
+          "supervised_rows": [0, 2, 11, 36, 72],
+          "expected_supervised_count": 5,
+          "global_divisor": 37,
+          "hidden_scale": 0.03125,
+          "weight_standard_deviation": 0.02
+        },
+        {
+          "case_id": "R17-D1",
+          "seed_label": "qwen35-hardware-qualification-r17-h2-direct-1",
+          "seed_sha256": "00575a437e446a8fd8258603e3d2b5a0bb84fa7503ede702cede26278a32d670",
+          "seed": 5724739,
+          "rows": 144,
+          "supervision_kind": "explicit",
+          "supervised_rows": [1, 7, 31, 63, 95, 127, 142, 143],
+          "expected_supervised_count": 8,
+          "global_divisor": 113,
+          "hidden_scale": 1.0,
+          "weight_standard_deviation": 0.02
+        },
+        {
+          "case_id": "R17-D2",
+          "seed_label": "qwen35-hardware-qualification-r17-h2-direct-2",
+          "seed_sha256": "148ef4de5a5f5e43690ac745a433db9f32365fd36cb947000166fb4d4bc353d3",
+          "seed": 344913118,
+          "rows": 257,
+          "supervision_kind": "explicit",
+          "supervised_rows": [0, 64, 128, 192, 255, 256],
+          "expected_supervised_count": 6,
+          "global_divisor": 263,
+          "hidden_scale": 8.0,
+          "weight_standard_deviation": 0.02
+        }
+      ],
+      "confirmatory_trajectories": [
+        {
+          "trajectory_id": "R17-T0",
+          "model_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-0",
+          "model_seed_sha256": "a579c3e29264bdba6fbf1933c1afd3ef41b1e6535e1644848efdd4cc294bec0d",
+          "model_seed": 2776220642,
+          "batch_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-0-batches",
+          "batch_seed_sha256": "4df25f5233a749770e8d0704111ef76dea2b546ea89b595de9b2748a3f579139",
+          "batch_seed_base": 1307729746,
+          "heldout_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-0-heldout",
+          "heldout_seed_sha256": "6ea0968d613eb5488836037f2dd8086b1983dce963e3cb470ba0bc5f081293bb",
+          "heldout_seed": 1856018061
+        },
+        {
+          "trajectory_id": "R17-T1",
+          "model_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-1",
+          "model_seed_sha256": "6fcf2eb9ef9472d18cb66065af4b40868c1409bdda0d814ebda9e27d580a8f8d",
+          "model_seed": 1875848889,
+          "batch_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-1-batches",
+          "batch_seed_sha256": "7ca6e02b325320efb8f3997c49fdd61c3dafffec4523d70addbf520605765e7c",
+          "batch_seed_base": 2091311147,
+          "heldout_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-1-heldout",
+          "heldout_seed_sha256": "b7b0ec4252c9401aef62c288e899f077bd2959c0afe004c5995f54d74291408e",
+          "heldout_seed": 3081825346
+        },
+        {
+          "trajectory_id": "R17-T2",
+          "model_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-2",
+          "model_seed_sha256": "f0cd56cffb1bf02f5804d3e00a14206bb1bc2600b7b450084ee85e8067fd28b0",
+          "model_seed": 4039988943,
+          "batch_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-2-batches",
+          "batch_seed_sha256": "c4fa1e281229d506ad57ea62145fdc7f31f15a570f519aef46649697966a6e1d",
+          "batch_seed_base": 3304726056,
+          "heldout_seed_label": "qwen35-hardware-qualification-r17-h2-trajectory-2-heldout",
+          "heldout_seed_sha256": "11e0debbb3d598f78d128c9d8f5666a8448489af3adcfbe49decebd477938211",
+          "heldout_seed": 299949755
+        }
+      ],
+      "trajectory_steps": 512,
+      "primary_observed_path": "liger_fused_selected_rows",
+      "primary_reference_path": "pytorch_dense_selected_rows",
+      "mandatory_diagnostic_observed_path": "pytorch_dense_selected_rows",
+      "mandatory_diagnostic_reference_path": "pytorch_dense_full_rows_ignore_index",
+      "full_dense_diagnostic_numerical_discrepancy_is_gating": false,
+      "full_dense_diagnostic_integrity_and_finiteness_are_mandatory": true,
+      "liger_numerical_failure_policy": "abandon_liger_no_outcome_fitted_threshold_rescue",
+      "r16_failed_criteria_reclassified_as_pass": false
+    }
+  }
+}

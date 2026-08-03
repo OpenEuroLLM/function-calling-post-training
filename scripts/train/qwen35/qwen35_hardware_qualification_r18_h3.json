@@ -1,0 +1,350 @@
+{
+  "allowed_successor_on_pass": "H4_only",
+  "artifact": "qwen35_r18_h3_distributed_normalization_contract",
+  "candidate_chunk_sizes_in_execution_order": [
+    128,
+    256,
+    512,
+    1024
+  ],
+  "execution": {
+    "accelerator": "NVIDIA_A100_SXM_64GB",
+    "automatic_successor": false,
+    "backend": "nccl",
+    "cuda_autocast_dtype": "torch.bfloat16",
+    "fresh_process_per_scenario_candidate": true,
+    "liger_execution_allowed": false,
+    "nodes": 1,
+    "parameter_gradient_moment_dtype": "torch.float32",
+    "python_bytecode_cache": "outside_source_tree",
+    "ranks": 4,
+    "slurm_account": "aifac_f02_434"
+  },
+  "failure_policy": "stop_before_H4_no_threshold_rescue",
+  "human_protocol": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h3_protocol_r1_20260719.md",
+    "sha256": "a50aaeecdb17a48f431902127d7d80b6760df6b1b93a7081c89607902522aaab"
+  },
+  "implementation_id": "pytorch_nonreentrant_checkpointed_chunked_selected_rows_r1",
+  "model": {
+    "attention_dropout": 0.0,
+    "head_dim": 16,
+    "hidden_size": 64,
+    "initializer_range": 0.2,
+    "intermediate_size": 128,
+    "layer_types": [
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 2,
+    "linear_key_head_dim": 16,
+    "linear_num_key_heads": 4,
+    "linear_num_value_heads": 4,
+    "linear_value_head_dim": 16,
+    "num_attention_heads": 4,
+    "num_hidden_layers": 2,
+    "num_key_value_heads": 2,
+    "sequence_length": 1056,
+    "tie_word_embeddings": true,
+    "use_cache": false,
+    "vocab_size": 256
+  },
+  "numerical_acceptance": {
+    "gradient_maximum_absolute_error": 0.01,
+    "gradient_minimum_cosine_similarity": 0.9999,
+    "gradient_relative_l2_error": 0.01,
+    "loss_maximum_absolute_error": 0.005,
+    "loss_relative_error": 0.001,
+    "nonfinite_count": 0,
+    "postclip_norm_maximum": 1.000001,
+    "preclip_norm_must_exceed": 1.0,
+    "update_minimum_cosine_similarity": 0.9999,
+    "update_relative_l2_error": 0.01
+  },
+  "optimizer": {
+    "beta1": 0.9,
+    "beta2": 0.95,
+    "epsilon": 1e-08,
+    "foreach": false,
+    "fused": true,
+    "learning_rate": 2e-05,
+    "maximum_gradient_norm": 1.0,
+    "name": "torch.optim.AdamW",
+    "optimizer_steps": 1,
+    "weight_decay": 0.1
+  },
+  "parent": {
+    "h2_independent_validation_sha256": "cd01fe72f7f73c3d2496390a8ccbee2718f78b7843208ccc626d1c7a51fed176",
+    "r18_machine_manifest_path": "scripts/train/qwen35/qwen35_hardware_qualification_r18.json",
+    "r18_machine_manifest_sha256": "679ad710f0be07f811071b1a56863b8cb851732a0ac8a808f4e5747e9c325ee0",
+    "r18_protocol_id": "qwen35-hardware-qualification-r18",
+    "r18_protocol_sha256": "8ddcaa7fad78e65fa06500ef62f1028d5bd9d1fdc4acab8241811f9bd77382ef"
+  },
+  "paths": {
+    "central_graph_sum": {
+      "backward_calls": 1,
+      "case_order": "slot_major_rank_minor",
+      "loss_fold": "left_to_right"
+    },
+    "central_sequential_backward": {
+      "backward_calls": "one_per_global_microbatch",
+      "case_order": "slot_major_rank_minor"
+    },
+    "ddp_gradient_accumulation": {
+      "backward_multiplier": 4,
+      "case_order_per_rank": "increasing_accumulation_slot",
+      "no_sync": "all_but_final_slot",
+      "synchronized_slot": "final",
+      "unscaled_model_loss": "local_cross_entropy_sum_divided_by_N_global"
+    },
+    "primary_reference": "central_graph_sum"
+  },
+  "preregistration_baseline_commit": "00fd47ec560ce7800c28b61b54451b803e17c9d9",
+  "protocol_date": "2026-07-19",
+  "protocol_id": "qwen35-hardware-qualification-r18-h3-r1",
+  "required_comparisons": [
+    "global_unscaled_loss",
+    "preclip_global_gradient_norm",
+    "aggregate_and_named_preclip_gradient",
+    "aggregate_and_named_clipped_gradient",
+    "aggregate_and_named_raw_adamw_update",
+    "aggregate_and_named_post_step_parameter",
+    "aggregate_and_named_exp_avg",
+    "aggregate_and_named_exp_avg_sq",
+    "optimizer_step_counters",
+    "parameter_gradient_moment_dtypes",
+    "finiteness"
+  ],
+  "required_validator_negative_controls": [
+    "changed_target_allocation",
+    "local_divisor",
+    "absent_world_size_scaling",
+    "doubled_world_size_scaling",
+    "disconnected_zero_target_audit",
+    "duplicate_case",
+    "missing_case",
+    "invalid_chunk_boundary",
+    "dense_logits_claim",
+    "changed_candidate",
+    "nonfinite_tensor",
+    "wrong_tensor_key",
+    "wrong_tensor_shape",
+    "wrong_tensor_dtype",
+    "optimizer_path_drift",
+    "inactive_clipping",
+    "loosened_threshold",
+    "forged_pass_status",
+    "evidence_hash_drift",
+    "imported_liger"
+  ],
+  "scenarios": [
+    {
+      "accumulation_steps": 2,
+      "case_seed_records": [
+        {
+          "seed": 3585061896,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-00",
+          "seed_sha256": "d5afb4084f964a86b56cdaeb0eab40a8f590f8b331a21b8d20eb0ff8a6a68b89"
+        },
+        {
+          "seed": 862221724,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-01",
+          "seed_sha256": "3364759ca5b747f738e6838aac79b423248dcf0b613da4658a2de67c8ce45217"
+        },
+        {
+          "seed": 126362637,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-02",
+          "seed_sha256": "0788240dc31fe5ba26570f63f7c3d521a55a3dad31f66e16f0bcfaee60a8e27b"
+        },
+        {
+          "seed": 1080211990,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-03",
+          "seed_sha256": "4062ba162d9644901fa8e1fa865088f0c51b4a8952bcc9b1ba463eab8c402f7f"
+        },
+        {
+          "seed": 2136235669,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-04",
+          "seed_sha256": "7f545e95ef5b89d72d131430b9a8fc2c81b62b4f909451be4121ec623433e11b"
+        },
+        {
+          "seed": 2553652336,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-05",
+          "seed_sha256": "9835a470add7843f2370074a2d3216d71e2b861d25d8b020c78cada5bc5a94d4"
+        },
+        {
+          "seed": 877585678,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-06",
+          "seed_sha256": "344ee50e512157cfd3f7efb73927b332a59a776f49d959ccd3ec31a94aa0dab9"
+        },
+        {
+          "seed": 4030044925,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-production-microbatch-07",
+          "seed_sha256": "f0359afd6317724daa53fcd661decec30ec29fd8a1a1b34c91072e8c55564c8e"
+        }
+      ],
+      "global_target_count": 1152,
+      "model_seed": 2144037659,
+      "model_seed_label": "qwen35-hardware-qualification-r18-h3-production-model",
+      "model_seed_sha256": "7fcb6b1b28408809e36b2a666824e38606d0789cd951ec4a9af98425d86854c8",
+      "per_rank_target_counts": [
+        0,
+        382,
+        384,
+        386
+      ],
+      "scenario_id": "P4x2",
+      "target_counts_by_slot_rank": [
+        [
+          0,
+          127,
+          128,
+          129
+        ],
+        [
+          0,
+          255,
+          256,
+          257
+        ]
+      ]
+    },
+    {
+      "accumulation_steps": 4,
+      "case_seed_records": [
+        {
+          "seed": 4168008118,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-00",
+          "seed_sha256": "f86ec1b6600e2bc7570723f356ee0482d3ebbef6789286eed3a5761cca14fbb7"
+        },
+        {
+          "seed": 781155412,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-01",
+          "seed_sha256": "2e8f7c5498b2975e69f6440c14528b630690a7f08f4ccadd9413a74c6a039dcf"
+        },
+        {
+          "seed": 252347115,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-02",
+          "seed_sha256": "0f0a82eb88fc7cd5e3f35e6c03e6ab8e6b92a13622835526f3c29f645398f0ac"
+        },
+        {
+          "seed": 3613242164,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-03",
+          "seed_sha256": "d75db334098d983b76b306487bce988855e3557646fda1f4b181eb4760954a2e"
+        },
+        {
+          "seed": 3462926939,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-04",
+          "seed_sha256": "ce68125b9f55f6ce23015fa71a8f0dd0890efd44a0c4ba97ea78ab3a53324f41"
+        },
+        {
+          "seed": 1847516832,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-05",
+          "seed_sha256": "6e1edea0dc8e7c8aa96546ca04cfbc2790d3d988618fd769ef231daec37f1873"
+        },
+        {
+          "seed": 3751969091,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-06",
+          "seed_sha256": "dfa28143bd52eb55d3cf75d37f1c1e4e257abd798cbb626408723974c1f47aa0"
+        },
+        {
+          "seed": 4143383705,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-07",
+          "seed_sha256": "f6f704991a8e91f249fe3880ec303faac791643c86bc7e739b104ee606d6179f"
+        },
+        {
+          "seed": 3406637587,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-08",
+          "seed_sha256": "cb0d2a1333734a10fb75fa45c85ab732f0418f5c64089cb2b90bb970991fa454"
+        },
+        {
+          "seed": 3863510614,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-09",
+          "seed_sha256": "e6487e56b631f32617968e209a781f820c57ba47310d7b92badc0f2a1f4d47e4"
+        },
+        {
+          "seed": 1283611110,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-10",
+          "seed_sha256": "4c8259e67473e320f7d83f0c34529394172ebe99686ba8c3e9b253cf12d3d8c5"
+        },
+        {
+          "seed": 2123158907,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-11",
+          "seed_sha256": "7e8cd57b8596ed5b859d5955eab6b459d3497c0142cb93cfbc1de16a7c570605"
+        },
+        {
+          "seed": 3463277208,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-12",
+          "seed_sha256": "ce6d6a98e74021393741343b2accf2666e7a936ce0f74ecf925643ee007400b4"
+        },
+        {
+          "seed": 395426297,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-13",
+          "seed_sha256": "1791b9f9f3e92bc9998ed3002c146864a1d1530472c6255e931c7ca4e8b23add"
+        },
+        {
+          "seed": 3676789104,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-14",
+          "seed_sha256": "db2759707bb231b2a3fa0a4f7362b2a669e9975a681c1b6eafdf0df92327c707"
+        },
+        {
+          "seed": 3508762807,
+          "seed_label": "qwen35-hardware-qualification-r18-h3-boundary-microbatch-15",
+          "seed_sha256": "d12378b724545d50c181f5c3e3ffa54f77c2dc1428cff4466db51f527cb04856"
+        }
+      ],
+      "global_target_count": 5760,
+      "model_seed": 654948457,
+      "model_seed_label": "qwen35-hardware-qualification-r18-h3-boundary-model",
+      "model_seed_sha256": "2709b869860a750792246c6ac6c7dc36af329eff3ad6e4b6f6bd61f5b025d621",
+      "per_rank_target_counts": [
+        0,
+        1916,
+        1920,
+        1924
+      ],
+      "scenario_id": "B4x4",
+      "target_counts_by_slot_rank": [
+        [
+          0,
+          127,
+          128,
+          129
+        ],
+        [
+          0,
+          255,
+          256,
+          257
+        ],
+        [
+          0,
+          511,
+          512,
+          513
+        ],
+        [
+          0,
+          1023,
+          1024,
+          1025
+        ]
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "status": "preregistered_before_implementation_and_cuda_output",
+  "tensor_evidence": {
+    "format": "safetensors",
+    "independent_metric_recomputation_required": true,
+    "per_path_families": [
+      "initial_parameter",
+      "preclip_gradient",
+      "clipped_gradient",
+      "post_step_parameter",
+      "optimizer_exp_avg",
+      "optimizer_exp_avg_sq"
+    ],
+    "producer_json": "strict_rfc8259_allow_nan_false",
+    "sha256_binding_required": true
+  }
+}

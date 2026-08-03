@@ -1,0 +1,296 @@
+{
+  "allowed_successor_on_complete_pass": "H5_only",
+  "artifact": "qwen35_r18_h4_real_32k_memory_kernel_and_chunk_selection_contract",
+  "automatic_successor": false,
+  "candidate_chunk_sizes_in_execution_order": [
+    128,
+    256,
+    512,
+    1024
+  ],
+  "data": {
+    "arm": "C00",
+    "documents_index_sha256": "760c54f136d86c9d6dc5adcd6b614b520e85dcd4bb6de9f2a766c4f13c8899cb",
+    "numpy_contract_version": "open-instruct-qwen35-numpy-v2",
+    "numpy_manifest_sha256": "bb9ddcdafe7cd09d6a947a1e754260398e6ad02cbccd6e575966a36577cea548",
+    "remote_root": "/leonardo_work/AIFAC_F02_434/ytahtah0/fc_causal_v3/pre_g2_qwen35_r1/data/C00",
+    "schedule_seed": 3407,
+    "synthetic_packs_allowed": false
+  },
+  "execution": {
+    "accelerator": "NVIDIA_A100_SXM_64GB",
+    "assays_per_candidate": 2,
+    "cuda_autocast_dtype": "torch.bfloat16",
+    "fresh_initial_checkpoint_per_assay": true,
+    "fresh_process_per_assay": true,
+    "gradient_accumulation_steps": 8,
+    "gradient_checkpointing": true,
+    "liger_execution_allowed": false,
+    "nodes": 1,
+    "parameter_gradient_moment_dtype": "torch.float32",
+    "per_device_train_batch_size": 1,
+    "python_bytecode_cache": "outside_source_tree",
+    "ranks": 1,
+    "sequence_length": 32768,
+    "slurm_account": "aifac_f02_434"
+  },
+  "failure_policy": "retain_and_stop_before_H5_no_threshold_rescue",
+  "four_update_schedule": {
+    "assistant_targets": 252834,
+    "attention_length_squared": 4058184280,
+    "embedded_schedule_sha256": "ae87fd292468b429a8f90830b799b26e48f7c8226c025125e1659df993c6b36b",
+    "entries_sha256": "cc7f728f4952b48efadc8b81cd0648adb9eb949a6972ec245fc2bbdb42dd0211",
+    "file_sha256": "27dd7c182df0702109305643595561a41a48c07dcac1d86fb139286a2bf340c1",
+    "fixed_positions": 1048576,
+    "optimizer_updates": 4,
+    "padding_positions": 516,
+    "real_positions": 1048060,
+    "remote_path": "/leonardo_work/AIFAC_F02_434/ytahtah0/fc_causal_v3/qualification/qwen35_hwq_r18h3v3_88b381d_clean/schedules/qwen35_c00_seed3407_004steps_032packs.json",
+    "scheduled_packs": 32,
+    "synthetic_packs": 0,
+    "unique_pack_uids": 32
+  },
+  "human_protocol": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h4_protocol_r1_20260720.md",
+    "sha256": "bac979d95427e5d8021aedc9f80e40e149bb91ae38f775def316e13523e06bb8"
+  },
+  "independent_validation": {
+    "candidate_self_validation_is_sufficient": false,
+    "every_input_file_must_be_hash_bound": true,
+    "kernel_mapping_must_cover_exact_observed_set": true,
+    "producer_outputs_may_not_define_acceptance": true,
+    "required_final_statuses": [
+      "passed_H5_only_authorized",
+      "failed_memory",
+      "failed_dense_or_wrong_loss_path",
+      "failed_kernel_path",
+      "failed_precision_update_or_schedule",
+      "blocked_incomplete_kernel_mapping",
+      "blocked_inconclusive_timing",
+      "invalid_infrastructure_or_evidence"
+    ],
+    "strict_json": true
+  },
+  "kernel_path": {
+    "automatic_regex_classification_is_sufficient": false,
+    "forbidden_components": [
+      "Liger-Kernel",
+      "liger_kernel",
+      "LigerFusedLinearCrossEntropy"
+    ],
+    "full_observed_cuda_kernel_set_must_be_mapped": true,
+    "mapping_fields": [
+      "exact_kernel_name",
+      "observed_count",
+      "observed_duration",
+      "disposition",
+      "semantic_component",
+      "source_identity",
+      "source_file_or_implementation_family",
+      "rationale"
+    ],
+    "required_components": [
+      "FlashAttention_full_attention",
+      "FLA_gated_delta_recurrence",
+      "causal_conv1d_boundary_aware_convolution",
+      "chunked_output_projection_GEMM",
+      "FP32_cross_entropy_and_reductions",
+      "activation_checkpoint_recomputation",
+      "AdamW_and_gradient_clipping",
+      "CUDA_and_PyTorch_runtime_support"
+    ],
+    "unknown_kernel_policy": "block"
+  },
+  "memory_acceptance": {
+    "allocator_history_must_not_reach_entry_cap": true,
+    "maximum_allocator_retries": 0,
+    "maximum_ooms": 0,
+    "maximum_peak_reserved_fraction": 0.9,
+    "minimum_headroom_fraction": 0.1,
+    "ordering": "peak_allocated_bytes_le_peak_reserved_bytes_le_total_device_bytes",
+    "snapshot_must_deserialize_under_pinned_runtime": true,
+    "snapshot_sha256_and_bytes_required": true,
+    "trace_sha256_and_bytes_required": true
+  },
+  "model": {
+    "model_class": "Qwen3_5ForCausalLM",
+    "model_id": "Qwen/Qwen3.5-0.8B-Base",
+    "model_type": "qwen3_5_text",
+    "remote_snapshot": "/leonardo_work/AIFAC_F02_434/ytahtah0/fc_causal_v3/pre_g2_qwen35_r1/hf/models--Qwen--Qwen3.5-0.8B-Base/snapshots/dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "tie_word_embeddings": true,
+    "vision_tower_allowed": false
+  },
+  "optimizer": {
+    "beta1": 0.9,
+    "beta2": 0.95,
+    "epsilon": 1e-08,
+    "learning_rate": 2e-05,
+    "maximum_gradient_norm": 1.0,
+    "name": "AdamW",
+    "scheduler": "cosine",
+    "warmup_ratio": 0.03,
+    "weight_decay": 0.1
+  },
+  "parent": {
+    "h3_independent_validation_sha256": "aff543e6edd0b072eecd72d51e765e10f009e1867abdefcc0f672d7e600525ef",
+    "h3_independent_validation_final_closure_sha256": "2e3929e758b947772658422a1aaa46c61f3be7ea19bcbe8564619e414fc08c9d",
+    "h3_source_commit": "88b381d49b213e388636054a0306766f95a664c0",
+    "r18_machine_manifest_sha256": "679ad710f0be07f811071b1a56863b8cb851732a0ac8a808f4e5747e9c325ee0",
+    "schedule_materialization_closure_sha256": "a585d99f7522560a90cab9351d33c9345bceeb1ad423631254e7e0b65fce7c05"
+  },
+  "preregistration_baseline_commit": "88b381d49b213e388636054a0306766f95a664c0",
+  "profiler_assay": {
+    "active_updates": [
+      2,
+      3,
+      4
+    ],
+    "allocator_history": true,
+    "cuda_event_updates": 4,
+    "exact_reporting": true,
+    "maximum_updates": 4,
+    "profiler_schedule": {
+      "active": 3,
+      "repeat": 1,
+      "skip_first": 0,
+      "wait": 0,
+      "warmup": 1
+    },
+    "real_packs": 32,
+    "require_every_forward_loss_audit": true,
+    "require_memory_snapshot": true,
+    "require_profiler_trace": true,
+    "warmup_updates": [
+      1
+    ]
+  },
+  "protocol_date": "2026-07-20",
+  "protocol_id": "qwen35-hardware-qualification-r18-h4-r1",
+  "required_candidate_artifacts": [
+    "immutable_input_manifest",
+    "exact_metrics",
+    "trainer_state",
+    "model_config_and_conversion_ledger",
+    "parameter_gradient_optimizer_dtype_and_update_audit",
+    "every_forward_selected_output_audit",
+    "profiler_trace",
+    "allocator_snapshot",
+    "memory_summary",
+    "complete_kernel_inventory",
+    "candidate_self_validation",
+    "slurm_submission_and_completion_evidence"
+  ],
+  "required_negative_controls": [
+    "wrong_candidate_chunk_size",
+    "missing_forward_audit",
+    "duplicate_forward_audit",
+    "wrong_selected_row_count",
+    "wrong_global_target_divisor",
+    "invalid_chunk_boundary",
+    "nonempty_returned_logits",
+    "dense_full_sequence_logits_shape",
+    "imported_liger",
+    "missing_required_kernel_component",
+    "unknown_observed_kernel",
+    "kernel_mapping_extra_row",
+    "allocator_history_cap_reached",
+    "allocator_retry",
+    "allocator_oom",
+    "memory_fraction_boundary_violation",
+    "profiler_step_count_drift",
+    "trace_hash_drift",
+    "snapshot_hash_drift",
+    "schedule_hash_drift",
+    "schedule_prefix_drift",
+    "duplicate_pack_uid",
+    "synthetic_pack",
+    "nonfinite_loss_gradient_or_duration",
+    "non_fp32_parameter_gradient_or_moment",
+    "zero_parameter_displacement",
+    "timing_cv_over_threshold",
+    "favorable_primary_repeat_mixing",
+    "wrong_two_percent_tie_set",
+    "wrong_smallest_chunk_tie_break",
+    "automatic_H5_or_scientific_submission"
+  ],
+  "resource_ceiling": {
+    "primary_candidate_jobs": 4,
+    "primary_gpu_hours": 6,
+    "primary_maximum_minutes_per_candidate_job": 90,
+    "repeat_candidate_jobs_if_triggered": 4,
+    "repeat_gpu_hours": 4,
+    "repeat_maximum_minutes_per_candidate_job": 60
+  },
+  "runtime_loss_audit": {
+    "checkpointed": true,
+    "cross_entropy_accumulation": "torch.float32",
+    "every_scheduled_pack_required": true,
+    "full_selected_logit_elements_formula": "selected_rows*248320",
+    "global_target_divisor_must_equal_accumulation_group_schedule_sum": true,
+    "implementation_id": "pytorch_nonreentrant_checkpointed_chunked_selected_rows_r1",
+    "maximum_transient_logit_elements_formula": "maximum_chunk_rows*248320",
+    "projection_autocast": "torch.bfloat16",
+    "returned_dense_logits": false,
+    "selected_rows_must_equal_nonignored_shifted_labels": true,
+    "vocab_size": 248320
+  },
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "source": {
+    "branch": "codex/qwen35-causal-suite",
+    "h4_implementation_commit_policy": "must_be_a_clean_descendant_of_the_preregistration_commit_and_be_hash_bound_in_every_candidate_artifact",
+    "require_clean_worktree": true
+  },
+  "status": "preregistered_after_H3_before_H4_implementation_or_CUDA_execution",
+  "thirteen_update_schedule": {
+    "assistant_targets": 764228,
+    "attention_length_squared": 15440143064,
+    "embedded_schedule_sha256": "377b1aa408e6cdeb9c6e66fbc51906866e1cdcfcb2b939aab2ffa731b32c0738",
+    "entries_sha256": "462d92b243a78ffcd4bbcb0bef88ebdad0ba7c041fcbbded9cd50cceea18871b",
+    "file_sha256": "f13fbe8c9b8f6c724aaa48c2598bc197dad0278c4bf6345a59479cbb780d0591",
+    "fixed_positions": 3407872,
+    "optimizer_updates": 13,
+    "padding_positions": 1087,
+    "real_positions": 3406785,
+    "remote_path": "/leonardo_work/AIFAC_F02_434/ytahtah0/fc_causal_v3/qualification/qwen35_hwq_r17_24bea3a/schedules/qwen35_c00_seed3407_013steps_104packs.json",
+    "scheduled_packs": 104,
+    "synthetic_packs": 0,
+    "unique_pack_uids": 104
+  },
+  "timing_assay": {
+    "cuda_event_measurement_is_corroborative_only": true,
+    "exact_reporting": true,
+    "maximum_updates": 13,
+    "measured_updates": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "profiler_and_allocator_history": false,
+    "real_packs": 104,
+    "selection_measurement": "synchronized_end_to_end_optimizer_update_seconds",
+    "warmup_updates": [
+      1,
+      2,
+      3
+    ]
+  },
+  "timing_selection": {
+    "candidate_statistic": "median_of_ten_synchronized_measured_updates",
+    "coefficient_of_variation": "sample_standard_deviation_divided_by_arithmetic_mean",
+    "maximum_coefficient_of_variation": 0.05,
+    "maximum_complete_timing_repeats": 1,
+    "repeat_policy": "if_any_primary_candidate_exceeds_CV_threshold_repeat_all_four_and_use_only_complete_repeat_if_all_pass",
+    "selection_failure": "blocked_inconclusive_timing",
+    "tie_break": "smallest_chunk_size",
+    "tie_fraction_inclusive": 0.02
+  }
+}

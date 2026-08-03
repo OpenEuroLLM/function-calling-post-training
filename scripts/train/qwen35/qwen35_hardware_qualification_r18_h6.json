@@ -1,0 +1,127 @@
+{
+  "artifact": "qwen35_r18_h6_continuous_resume_equality_contract",
+  "automatic_successor": false,
+  "base_source": {
+    "commit": "260a804037dd45d68fdb57f8d595ec4781b88a9c",
+    "tree": "913524f0e921bd00801e9b440a0d030a0f0b058c"
+  },
+  "comparison": {
+    "atol": 0,
+    "checkpoint_file_bytes_required_equal": false,
+    "deterministic_metric_projection_required_equal": true,
+    "discrete_and_structured_state_required_equal": true,
+    "model_optimizer_scheduler_rng_tensors_required_bit_equal": true,
+    "rtol": 0,
+    "schedule_cursor_and_pack_sequence_required_equal": true
+  },
+  "continuous_path": {
+    "expected_final_global_step": 10,
+    "expected_initial_global_step": 0,
+    "optimizer_updates_executed": 10,
+    "resume_checkpoint": null,
+    "schedule_index_interval": [
+      0,
+      79
+    ]
+  },
+  "execution": {
+    "cuda_event_step_timing": false,
+    "gradient_accumulation_steps": 2,
+    "hardware_profile": false,
+    "maximum_scheduler_steps": 10,
+    "nodes": 1,
+    "per_device_train_batch_size": 1,
+    "ranks": 4,
+    "save_steps": 10,
+    "selected_loss_chunk_size": 512,
+    "sequence_length": 32768,
+    "slurm_account": "aifac_f02_434"
+  },
+  "exposure": {
+    "assistant_targets": 602629,
+    "attention_length_squared": 11096774268,
+    "fixed_positions": 2621440,
+    "optimizer_updates": 10,
+    "padding_positions": 819,
+    "per_update_assistant_targets": [
+      54778,
+      78125,
+      50730,
+      69201,
+      56143,
+      65752,
+      45663,
+      63992,
+      57005,
+      61240
+    ],
+    "real_positions": 2620621,
+    "scheduled_packs": 80,
+    "synthetic_packs": 0
+  },
+  "h5_predecessor": {
+    "checkpoint_file_manifest_sha256": "76aee3cd63d1a0bf6291f65cf0b065c102f6710d497de9ae3782e75bcf67cfa9",
+    "checkpoint_model_safetensors_sha256": "11b8000cca8d0c0049b3607728814e5268ad1dab15cda17403527b98814e026f",
+    "checkpoint_reload_validation_sha256": "8d3b16e0f993e3a44d4e42f003ca0cf0997fc8c415d1cf65d53e86be6ce386fb",
+    "checkpoint_remote_path": "/leonardo_work/AIFAC_F02_434/ytahtah0/fc_causal_v3/qualification/r18_h5_gpu_attempt03_260a804/training/checkpoint-5",
+    "exact_metrics_jsonl_sha256": "693fcc630fff09fea6a9d42fdbd2843f8f4b42f1827d621b1474e601ae8fb848",
+    "final_closure_path": "artifacts/qwen35_hardware_qualification_20260718/r18_h5_final_closure_20260720.json",
+    "final_closure_sha256": "0d38dfdb814ed0facca07ca92fd28421b8fc66b405e755b14cd8b13708580e4a",
+    "independent_closure_sha256": "7abe52065816c24694f0d99786cc31acd2cc8826a5fb725024182117ccafb75c",
+    "status": "passed_H5_independently_closed_H6_only_authorized"
+  },
+  "human_protocol": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h6_protocol_r1_20260720.md",
+    "sha256": "2add03918c475fe67066acb9d7b1acad4fb50600f68cd968987cd76e75a87081"
+  },
+  "model_and_data": {
+    "arm": "C00",
+    "model_class": "Qwen3_5ForCausalLM",
+    "model_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "model_type": "qwen3_5_text",
+    "numpy_manifest_sha256": "bb9ddcdafe7cd09d6a947a1e754260398e6ad02cbccd6e575966a36577cea548",
+    "vision_tower_allowed": false
+  },
+  "protocol_date": "2026-07-20",
+  "protocol_id": "qwen35-hardware-qualification-r18-h6-r1",
+  "replacement_or_retry_policy": "none_without_new_prospective_amendment_and_retained_failure_closure",
+  "resource_ceiling": {
+    "gpu_hours": 3,
+    "gpu_jobs": 1,
+    "gpus": 4,
+    "maximum_minutes": 45,
+    "nodes": 1
+  },
+  "resume_path": {
+    "expected_final_global_step": 10,
+    "expected_initial_global_step": 5,
+    "optimizer_updates_executed": 5,
+    "resume_checkpoint": "accepted_H5_checkpoint_5",
+    "schedule_index_interval": [
+      40,
+      79
+    ]
+  },
+  "schedule": {
+    "embedded_schedule_sha256": "6fb941968793bc8d3b11c178279de0be16ffde97837b16401e9d1c457a046281",
+    "entries_sha256": "163db66ee13a7f07659be59f90b91d2a21de7ed9067d841cc2feabf49dd239cd",
+    "file_sha256": "4e8d4a9fb1a1fd0c92abff0321e71355e066c5723f626bed847fd799704e0c2c",
+    "optimizer_updates": 10,
+    "scheduled_packs": 80,
+    "synthetic_packs": 0
+  },
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "source": {
+    "allowed_h6_implementation_paths": [
+      "open_instruct/qwen35_qualification_r18_h6.py",
+      "scripts/train/qwen35/compare_qwen35_checkpoints.py",
+      "scripts/train/qwen35/leonardo_h6_r18.sbatch",
+      "scripts/train/qwen35/validate_qwen35_h6_r18.py",
+      "tests/test_qwen35_qualification_r18_h6.py"
+    ],
+    "clean_descendant_required": true
+  },
+  "status": "preregistered_after_independent_H5_pass_before_H6_implementation_or_GPU_execution",
+  "successor_on_complete_independent_pass": "H7_only"
+}

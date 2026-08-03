@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "protocol_id": "qwen35-hardware-qualification-r18",
+  "protocol_date": "2026-07-19",
+  "status": "ready_for_implementation_validation",
+  "base_manifest": {
+    "path": "qwen35_hardware_qualification_r17.json",
+    "sha256": "67cbbea5ec1c1bd7b982c5f2c35346654a570d69832ac95a4fa93921a385f7d0",
+    "protocol_id": "qwen35-hardware-qualification-r17"
+  },
+  "transformations": {
+    "abandon_liger_without_rescoring_r17": true,
+    "replace_h2_with_checkpointed_chunked_selected_rows": true,
+    "require_bit_exact_same_chunk_reference": true,
+    "retain_chunk_shape_differences_as_mandatory_nongating_diagnostics": true,
+    "retain_h0_h1_scope_training_and_downstream_gates": true
+  },
+  "overrides": {
+    "protocol_id": "qwen35-hardware-qualification-r18",
+    "protocol_date": "2026-07-19",
+    "source": {
+      "corrective_baseline_commit": "8f15b85564a17943234b2ceb2bfe89a4482140bb",
+      "branch": "codex/qwen35-causal-suite",
+      "require_clean_worktree": true
+    },
+    "runtime_pins": {
+      "python_major_minor": "3.12",
+      "torch_version": "2.9.1+cu129",
+      "torch_cuda_build": "12.9",
+      "accelerate_version": "1.12.0",
+      "numpy_version": "2.5.1",
+      "torchvision_version": "0.24.1+cu129",
+      "flash_attn_version": "2.8.3",
+      "causal_conv1d_version": "1.6.2.post1",
+      "flash_linear_attention_version": "0.4.1",
+      "fla_core_version": "0.4.1",
+      "transformers_version": "5.14.0.dev0",
+      "transformers_commit": "d7d894cf917562d62c61497588ab64e4ae2c699d",
+      "liger_execution_allowed": false,
+      "native_extensions": {
+        "causal-conv1d": {
+          "module": "causal_conv1d_cuda",
+          "sdist_url": "https://files.pythonhosted.org/packages/63/5c/2403b8410122d159405c4bd8456340c7251c193358fa24d30cb273fb5048/causal_conv1d-1.6.2.post1.tar.gz",
+          "sdist_sha256": "245e314ea21064ded7a5bf6b3b842b644aa6f92e45cecfe3e935629744c35ff4",
+          "build_mode": "forced_local_source_build_including_sm80_no_cache",
+          "maximum_glibc_version": [2, 28]
+        },
+        "flash-attn": {
+          "module": "flash_attn_2_cuda",
+          "sdist_url": "https://files.pythonhosted.org/packages/3b/b2/8d76c41ad7974ee264754709c22963447f7f8134613fd9ce80984ed0dab7/flash_attn-2.8.3.tar.gz",
+          "sdist_sha256": "1e71dd64a9e0280e0447b8a0c2541bad4bf6ac65bdeaa2f90e51a9e57de0370d",
+          "build_mode": "forced_local_source_build_sm80_only_no_cache",
+          "maximum_glibc_version": [2, 28]
+        }
+      }
+    },
+    "gates": [
+      {"gate_id": "H0", "name": "identity_account_runtime_hardware", "depends_on": [], "mandatory": true},
+      {"gate_id": "H1", "name": "official_text_gpu_parity", "depends_on": ["H0"], "mandatory": true},
+      {"gate_id": "H2", "name": "checkpointed_chunked_selected_loss_bit_exact_parity", "depends_on": ["H1"], "mandatory": true},
+      {"gate_id": "H3", "name": "full_model_ddp_gradient_accumulation_parity", "depends_on": ["H2"], "mandatory": true},
+      {"gate_id": "H4", "name": "real_32k_memory_kernel_path_and_chunk_selection", "depends_on": ["H3"], "mandatory": true},
+      {"gate_id": "H5", "name": "four_gpu_schedule_nccl_bounded_run", "depends_on": ["H4"], "mandatory": true},
+      {"gate_id": "H6", "name": "continuous_resume_equality", "depends_on": ["H5"], "mandatory": true},
+      {"gate_id": "H7", "name": "four_vs_eight_gpu_topology", "depends_on": ["H6"], "mandatory": true},
+      {"gate_id": "H8", "name": "measured_reporting_profiler_reconciliation", "depends_on": ["H7"], "mandatory": true},
+      {"gate_id": "H9", "name": "independent_closure_audit", "depends_on": ["H8"], "mandatory": true}
+    ],
+    "h2_acceptance": {
+      "protocol_revision": 5,
+      "human_protocol_sha256": "8ddcaa7fad78e65fa06500ef62f1028d5bd9d1fdc4acab8241811f9bd77382ef",
+      "production_implementation_id": "pytorch_nonreentrant_checkpointed_chunked_selected_rows_r1",
+      "candidate_chunk_sizes": [128, 256, 512, 1024],
+      "primary_observed_path": "pytorch_checkpointed_chunked_selected_rows",
+      "primary_reference_path": "pytorch_ordinary_chunked_selected_rows_same_order",
+      "primary_acceptance": "bit_exact_all_recorded_quantities",
+      "mandatory_diagnostic_a_observed_path": "pytorch_ordinary_chunked_selected_rows_same_order",
+      "mandatory_diagnostic_a_reference_path": "pytorch_unchunked_selected_rows",
+      "mandatory_diagnostic_b_observed_path": "pytorch_unchunked_selected_rows",
+      "mandatory_diagnostic_b_reference_path": "pytorch_full_rows_ignore_index",
+      "diagnostic_numerical_discrepancy_is_gating": false,
+      "diagnostic_integrity_and_finiteness_are_mandatory": true,
+      "checkpoint": {
+        "use_reentrant": false,
+        "preserve_rng_state": true,
+        "determinism_check": "default",
+        "debug": false,
+        "early_stop": true
+      },
+      "precision": {
+        "parameters": "torch.float32",
+        "gradients": "torch.float32",
+        "adamw_moments": "torch.float32",
+        "projection_autocast": "torch.bfloat16",
+        "cross_entropy_accumulation": "torch.float32"
+      },
+      "direct_hidden_size": 256,
+      "direct_vocab_size": 4096,
+      "direct_weight_standard_deviation": 0.02,
+      "direct_global_divisor_extra": 37,
+      "direct_cases": [
+        {"case_id": "R18-D0", "selected_rows": 1, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-0", "seed_sha256": "90475d1c39e06a1175d38cdbe5b07c61219b119532e4a60e86b519f2fab4db8c", "seed": 2420595996, "hidden_scale": 0.03125},
+        {"case_id": "R18-D1", "selected_rows": 127, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-1", "seed_sha256": "ce06ffea5e27da1cf4be67c48a21868ebdf4dd32500fdc786b6d33ba6cbce5a9", "seed": 3456565226, "hidden_scale": 1.0},
+        {"case_id": "R18-D2", "selected_rows": 128, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-2", "seed_sha256": "b4bba88810a1ea44924ad20184e1a6506698db1e2cff46e96ad566d786bdaea4", "seed": 3032197256, "hidden_scale": 8.0},
+        {"case_id": "R18-D3", "selected_rows": 129, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-3", "seed_sha256": "aaafa9a858c8d9916ca84c7c9b0b94b6279d97d3907b57afc0b45935ecdfcd5f", "seed": 2863638952, "hidden_scale": 0.03125},
+        {"case_id": "R18-D4", "selected_rows": 256, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-4", "seed_sha256": "08e47b9346a45fb9f6be10b77fe10e8da9b36fdacc3d2f4747d09a858fd3c3aa", "seed": 149191571, "hidden_scale": 1.0},
+        {"case_id": "R18-D5", "selected_rows": 257, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-5", "seed_sha256": "a7afa3e31ccc4b90b0df350b5cf5bbdaf7d27005120c8c66d36bad9869e45c08", "seed": 2813305827, "hidden_scale": 8.0},
+        {"case_id": "R18-D6", "selected_rows": 512, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-6", "seed_sha256": "c1542bcbaf0e7d0f2158512d36e09c2f7699b12edcb94f21ad6377c753e75b55", "seed": 3243518923, "hidden_scale": 0.03125},
+        {"case_id": "R18-D7", "selected_rows": 513, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-7", "seed_sha256": "961f698b56704c8d262072744a3d6b5f5d2e3a76cc55c27e82e873b45283c7c4", "seed": 2518641035, "hidden_scale": 1.0},
+        {"case_id": "R18-D8", "selected_rows": 1024, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-8", "seed_sha256": "264e3cba7f35f2f2aa2cfc3fef9159259670f88874939913168048702b16e003", "seed": 642661562, "hidden_scale": 8.0},
+        {"case_id": "R18-D9", "selected_rows": 1025, "seed_label": "qwen35-hardware-qualification-r18-h2-direct-9", "seed_sha256": "6c8c9ae6dbe4503f405e20a4d817b44c446d576a2527b92fcfbc06e2d0280210", "seed": 1821154022, "hidden_scale": 1.0}
+      ],
+      "real_geometry_case": {
+        "case_id": "R18-G0",
+        "hidden_size": 1024,
+        "vocab_size": 248320,
+        "selected_rows": 1025,
+        "global_divisor": 1062,
+        "weight_standard_deviation": 0.02,
+        "hidden_scale": 1.0,
+        "seed_label": "qwen35-hardware-qualification-r18-h2-real-geometry-0",
+        "seed_sha256": "a7855acf958b6c60eb3f9c0bd3d1c5a50109ecd9f900fdf91bb6df50109c6ff4",
+        "seed": 2810534607
+      },
+      "trajectory_model": {
+        "vocab_size": 256,
+        "hidden_size": 64,
+        "sequence_length": 1056,
+        "dropout": 0.0,
+        "tied_input_output_embeddings": true,
+        "hidden_transformations": 2
+      },
+      "trajectory_target_count_cycle": [1, 127, 128, 129, 256, 257, 512, 513, 1024, 1025],
+      "trajectory_steps": 256,
+      "trajectories": [
+        {"trajectory_id": "R18-T0", "model_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-0", "model_seed_sha256": "91d2c49fc2cb7c64e5832f27e80678bbda51ec031f718a1fc7a75431c1aff0e4", "model_seed": 2446509215, "batch_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-0-batches", "batch_seed_sha256": "2b43e8ef6f7ddb857a5054e4c145bc39022a244bd2dadd1fa243e769dd82a5d5", "batch_seed_base": 725870831, "heldout_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-0-heldout", "heldout_seed_sha256": "292f252665c42974e8221c0d13a8e1a0963cbd5a62576661fe3216b38bf4cee6", "heldout_seed": 690955558},
+        {"trajectory_id": "R18-T1", "model_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-1", "model_seed_sha256": "3b0ba7b3ee278940a18fe1ebb860652cfacebf3ca5aaedb0b07f86c7b54b8882", "model_seed": 990619571, "batch_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-1-batches", "batch_seed_sha256": "fca9cd778d9c08a1dd56ab89f83c1ceebf83737e31e30013037daa69d2838a0c", "batch_seed_base": 4238986615, "heldout_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-1-heldout", "heldout_seed_sha256": "2f85e0f71b764b16129bf0fb8e20c91a9bcc6d10dc445552402af37035a2c21e", "heldout_seed": 797303031},
+        {"trajectory_id": "R18-T2", "model_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-2", "model_seed_sha256": "903e48f867269ba22f8ef64c62cda8a06899bd2b7d039183e326e73c04b69d30", "model_seed": 2420001016, "batch_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-2-batches", "batch_seed_sha256": "7b9e4251bd6ab98e4af4879c0cb8513eab23a9dbb277030f99873e6d53df0c43", "batch_seed_base": 2073969233, "heldout_seed_label": "qwen35-hardware-qualification-r18-h2-trajectory-2-heldout", "heldout_seed_sha256": "3d323811f70a20990445f37f1e603fd1b2105cd6e20a5b0fba1ca627945cd577", "heldout_seed": 1026701329}
+      ],
+      "optimizer": {
+        "name": "AdamW",
+        "learning_rate": 0.00002,
+        "beta1": 0.9,
+        "beta2": 0.95,
+        "epsilon": 1e-8,
+        "weight_decay": 0.1,
+        "maximum_gradient_norm": 1.0
+      },
+      "zero_target_graph_connected_finite_exact_zero": true,
+      "saved_tensor_must_exclude_chunk_logits": true,
+      "chunk_function_forward_and_recompute_count_required": true,
+      "all_candidates_must_pass_h2_and_h3": true,
+      "failure_policy": "stop_no_threshold_rescue"
+    },
+    "memory_acceptance": {
+      "maximum_peak_reserved_fraction": 0.9,
+      "minimum_headroom_fraction": 0.1,
+      "maximum_allocator_retries": 0,
+      "forbid_dense_full_sequence_logits": true,
+      "chunk_candidates": [128, 256, 512, 1024],
+      "minimum_measured_updates_per_candidate": 3,
+      "selection_metric": "median_synchronized_steady_state_optimizer_update_seconds",
+      "tie_fraction": 0.02,
+      "tie_break": "smaller_chunk_for_hbm_headroom"
+    }
+  }
+}

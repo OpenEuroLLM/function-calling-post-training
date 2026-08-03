@@ -1,0 +1,65 @@
+{
+  "artifact": "qwen35_r18_h5_distributed_lifecycle_and_trace_integrity_amendment",
+  "automatic_successor": false,
+  "base_h5_contract_sha256": "74476804f5bb72f2212394f7d1646b31d1f3e2df8ca0f65cda261997f2efebb1",
+  "failed_attempt": {
+    "failure_closure_path": "artifacts/qwen35_hardware_qualification_20260718/r18_h5_attempt01_failure_closure_20260720.json",
+    "failure_closure_sha256": "5ef82ccdc46325c97040d85019d57bd5a63f2f3029a39c3e55a03fc089cc1d80",
+    "job_id": "49878043",
+    "source_commit": "cb46873dc6929042b4a4b20b18729a17420ac476",
+    "source_tree": "5cf694809e6f19df60906346e9574dab7cd0b336"
+  },
+  "frozen_corrections": {
+    "distributed_debug": "INFO",
+    "explicit_process_group_cleanup": true,
+    "local_cuda_device_qualified_initialization_and_barriers": true,
+    "nccl_async_error_environment": "TORCH_NCCL_ASYNC_ERROR_HANDLING=1",
+    "raw_trace_immutable": true,
+    "sanitized_derivative_name": "qwen35_cuda_profiler_trace_sanitized.json",
+    "sanitizer": {
+      "from_ascii": "\"Process Group Description\": ,",
+      "replacement_size_delta_bytes": 4,
+      "streaming_boundary_safe": true,
+      "to_ascii": "\"Process Group Description\": null,"
+    },
+    "stderr_lifecycle_markers_rejected": [
+      "destroy_process_group() was not called",
+      "barrier(): using the device under current context",
+      "Guessing device ID based on global rank",
+      "Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated"
+    ]
+  },
+  "full_h5_rerun_required": true,
+  "human_amendment": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h5_harness_amendment_r1_20260720.md",
+    "sha256": "315b6bbdd594972becd4cf0d6515c46db25fec5ec3bd45a76fc72f524d681a5b"
+  },
+  "model_loss_data_schedule_optimizer_precision_or_threshold_change_allowed": false,
+  "protocol_date": "2026-07-20",
+  "protocol_id": "qwen35-hardware-qualification-r18-h5-harness-amendment-r1",
+  "replacement_resource_ceiling": {
+    "gpu_hours": 3,
+    "maximum_jobs": 1,
+    "maximum_minutes": 45,
+    "nodes": 1,
+    "total_gpus": 4
+  },
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "source": {
+    "allowed_paths_from_amendment_preregistration_commit": [
+      "open_instruct/qwen35_qualification_r18_h5.py",
+      "scripts/train/qwen35/leonardo_h5_r18.sbatch",
+      "scripts/train/qwen35/train_qwen35_sft.py",
+      "scripts/train/qwen35/validate_qwen35_accelerate_schedule_sharding_r18_h5.py",
+      "scripts/train/qwen35/validate_qwen35_ddp_loss_normalization_r18_h5.py",
+      "scripts/train/qwen35/validate_qwen35_h5_nccl_trace_r18.py",
+      "scripts/train/qwen35/validate_qwen35_h5_r18.py",
+      "tests/test_qwen35_qualification_r18_h5.py"
+    ],
+    "implementation_must_be_clean_descendant": true,
+    "parent_failed_implementation_commit": "cb46873dc6929042b4a4b20b18729a17420ac476"
+  },
+  "status": "preregistered_after_attempt01_failure_before_repair_source_or_replacement_gpu_execution",
+  "successor_on_complete_independent_pass": "H6_only"
+}

@@ -1,0 +1,78 @@
+{
+  "artifact": "qwen35_r18_h5_metrics_barrier_and_reload_serialization_amendment",
+  "automatic_successor": false,
+  "base_h5_contract_sha256": "74476804f5bb72f2212394f7d1646b31d1f3e2df8ca0f65cda261997f2efebb1",
+  "failed_attempt": {
+    "failure_closure_path": "artifacts/qwen35_hardware_qualification_20260718/r18_h5_attempt02_failure_closure_20260720.json",
+    "failure_closure_sha256": "256a2867af66ba8b162d3ee5f9b22b41e7405ecab6cb4e669b4dbb26da6414e9",
+    "job_id": "49880933",
+    "source_commit": "f58eb54b6c69e02b87f6976ab2972ec6b2578511",
+    "source_tree": "32f53a9610dca246ef281fc5b24ad13eeab8ee03"
+  },
+  "frozen_corrections": {
+    "checkpoint_loading_info": {
+      "accepted_container_types": [
+        "frozenset",
+        "list",
+        "set",
+        "tuple"
+      ],
+      "duplicate_entries_rejected": true,
+      "element_type": "str",
+      "normalized_json_type": "sorted_array",
+      "nonempty_remains_strict_reload_failure": true
+    },
+    "exact_metrics_window_barrier": {
+      "existing_helper": "distributed_barrier_on_local_cuda_device",
+      "number_or_placement_change_allowed": false,
+      "source_location_at_failed_commit": "scripts/train/qwen35/train_qwen35_sft.py:381"
+    },
+    "trainer_barrier_ast_policy": "every torch.distributed.barrier call has device_ids keyword"
+  },
+  "full_h5_rerun_required": true,
+  "human_amendment": {
+    "path": "methodology/qwen35_hardware_qualification_r18_h5_harness_amendment_r2_20260720.md",
+    "sha256": "3e976e767b2c5b4897f804a18b54c42da8427a6585ad05319d7a3ab27568bc5b"
+  },
+  "model_loss_data_schedule_optimizer_precision_or_threshold_change_allowed": false,
+  "parent_harness_amendment_sha256": "d5f1521240ab5f9054f75ee50cf8659711edfdc022a176ab99c902572807c7f5",
+  "protocol_date": "2026-07-20",
+  "protocol_id": "qwen35-hardware-qualification-r18-h5-harness-amendment-r2",
+  "reload_type_diagnostic": {
+    "job_id": "49881614",
+    "report_path": "artifacts/qwen35_hardware_qualification_20260718/r18_h5_attempt02_reload_type_diagnostic_49881614/loading_info_type_report.json",
+    "report_sha256": "891c28dc4484780349ea05bf388b70c5e7ecbd2c64dc633154ccbe0f9895ccf1",
+    "set_paths": [
+      "$.mismatched_keys",
+      "$.missing_keys",
+      "$.unexpected_keys"
+    ],
+    "status": "confirmed_set_serialization_source"
+  },
+  "replacement_resource_ceiling": {
+    "gpu_hours": 3,
+    "maximum_jobs": 1,
+    "maximum_minutes": 45,
+    "nodes": 1,
+    "total_gpus": 4
+  },
+  "schema_version": 1,
+  "scientific_training_authorized": false,
+  "source": {
+    "allowed_paths_from_amendment_preregistration_commit": [
+      "open_instruct/qwen35_qualification_r18_h5.py",
+      "scripts/train/qwen35/leonardo_h5_r18.sbatch",
+      "scripts/train/qwen35/train_qwen35_sft.py",
+      "scripts/train/qwen35/validate_qwen35_accelerate_schedule_sharding_r18_h5.py",
+      "scripts/train/qwen35/validate_qwen35_ddp_loss_normalization_r18_h5.py",
+      "scripts/train/qwen35/validate_qwen35_h5_checkpoint_reload_r18.py",
+      "scripts/train/qwen35/validate_qwen35_h5_nccl_trace_r18.py",
+      "scripts/train/qwen35/validate_qwen35_h5_r18.py",
+      "tests/test_qwen35_qualification_r18_h5.py"
+    ],
+    "implementation_must_be_clean_descendant": true,
+    "parent_failed_implementation_commit": "f58eb54b6c69e02b87f6976ab2972ec6b2578511"
+  },
+  "status": "preregistered_after_attempt02_failure_before_r2_repair_source_or_replacement_gpu_execution",
+  "successor_on_complete_independent_pass": "H6_only"
+}

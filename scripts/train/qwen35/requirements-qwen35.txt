@@ -1,0 +1,19 @@
+# Qwen3.5 was not present in Open-Instruct's Transformers 4.57 baseline.
+# Keep the source revision immutable until the reference and packed-kernel gates
+# have been rerun deliberately against a newer commit.
+--extra-index-url https://download.pytorch.org/whl/cu129
+
+torch==2.9.1+cu129
+torchvision==0.24.1+cu129
+accelerate==1.12.0
+numpy==2.5.1
+transformers @ https://github.com/huggingface/transformers/archive/d7d894cf917562d62c61497588ab64e4ae2c699d.tar.gz
+liger-kernel @ https://github.com/linkedin/Liger-Kernel/archive/72a4ed47a5c593b58045a0af14d3f774a037bd92.tar.gz
+
+# These kernels are semantic requirements for isolated Qwen3.5 packed
+# documents, not merely throughput optimizations. Generated runtime evidence
+# is intentionally excluded from the public code snapshot.
+flash-attn @ https://files.pythonhosted.org/packages/3b/b2/8d76c41ad7974ee264754709c22963447f7f8134613fd9ce80984ed0dab7/flash_attn-2.8.3.tar.gz#sha256=1e71dd64a9e0280e0447b8a0c2541bad4bf6ac65bdeaa2f90e51a9e57de0370d
+causal-conv1d @ https://files.pythonhosted.org/packages/63/5c/2403b8410122d159405c4bd8456340c7251c193358fa24d30cb273fb5048/causal_conv1d-1.6.2.post1.tar.gz#sha256=245e314ea21064ded7a5bf6b3b842b644aa6f92e45cecfe3e935629744c35ff4
+flash-linear-attention==0.4.1
+fla-core==0.4.1
