@@ -1,0 +1,66 @@
+{
+  "snapshot": "olmo3-phase2",
+  "upstream": {
+    "repository": "https://github.com/allenai/open-instruct",
+    "base_commit": "c67b3b50412000f0ae8378e9843dc6c546260b43"
+  },
+  "assembly": {
+    "policy": "Leonardo working-tree files win conflicts; Cray1 supplies only missing preprocessing and verification utilities",
+    "source_working_trees_modified": false
+  },
+  "critical_files": [
+    {
+      "path": "scripts/slurm/sft/prepare_phase2_centerpiece_AMS_v2_data.sh",
+      "source": "Leonardo",
+      "sha256": "e5554c6124d693d9b5bbdcf36ab5108738125a1efe3723a8e34f560b93e209e7"
+    },
+    {
+      "path": "scripts/slurm/sft/train_phase2_centerpiece_AMS_v2_leonardo.sh",
+      "source": "Leonardo",
+      "sha256": "df2e2120c0c946df66c9f321cae6f392207938bec68b55457068c2415b3c337e"
+    },
+    {
+      "path": "scripts/slurm/sft/Olmo-3-7B-SFT-slurm.py",
+      "source": "Leonardo",
+      "sha256": "82ca4ec9148fa2705bcf8e422453a2c425da98523cd1e179c87aee54bd9e7479"
+    },
+    {
+      "path": "scripts/data/convert_sft_data_for_olmocore.py",
+      "source": "Leonardo",
+      "sha256": "2fbea97c91137f7c7fda240cd15108bd51714423687b2cd59a1d0c5cf2ccacd1"
+    },
+    {
+      "path": "scripts/slurm/sft/convert_checkpoint_leonardo.sh",
+      "source": "Leonardo",
+      "sha256": "9ca3751d961f656dc73474c5810b36c90d5df35ecf42bd5cff5ffba501afddec"
+    },
+    {
+      "path": "scripts/slurm/sft/convert_trained_checkpoint_to_hf.sh",
+      "source": "Leonardo",
+      "sha256": "1f633bb647f3c42b0b06878b5edaee00f6f2ff01e9b1411a470715386707c211"
+    },
+    {
+      "path": "scripts/data/convert_openai_to_dolci_format.py",
+      "source": "Cray1",
+      "sha256": "7e775e1923380b8121f0e91a23c26931d7328f85bd60ca44c95a4c81e0088da7"
+    },
+    {
+      "path": "pyproject.toml",
+      "source": "Leonardo",
+      "sha256": "6807d5a8c8951f138e503220a41593d3613662d216ae4575099acedd8c97fa38"
+    },
+    {
+      "path": "uv.lock",
+      "source": "Leonardo",
+      "sha256": "d699497a0676946cff7ef80fff4644271b936c4cd6a65c759f28cee49f0594b3"
+    }
+  ],
+  "excluded": [
+    "datasets and model artifacts",
+    "logs and generated evidence",
+    "internal notes and reports",
+    "task boards and experiment registries",
+    "local research harnesses",
+    "Mattermost and document-download utilities"
+  ]
+}

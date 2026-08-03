@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+#SBATCH --job-name=phase2-a3-fc-sft
+#SBATCH --nodes=4
+#SBATCH --partition=boost_usr_prod
+#SBATCH --account=oellm_prod2026
+#SBATCH --qos=boost_qos_lprod
+#SBATCH --gpus-per-node=a100:4
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=0
+#SBATCH --time=24:00:00
+#SBATCH --output=logs/%j.%x.out
+#SBATCH --error=logs/%j.%x.err
+
+# Phase 2 Experiment A3: FC-only SFT with curated Dolci + TxT360-AMS (365,200 samples).
+#
+# Tests TxT360 value with AMS-targeted filtering. Compare A3 vs P1 (forward
+# contribution) and A3 vs Q2 (AMS filtering effect, volume-matched).
+# FC-only recipe: LR 5e-5, batch 256K, 1 epoch, 4 nodes.
+#
+# K-replication: set SEED to a non-empty value to run a paired replication of
+# the A3 vs Q2 headline test. SEED suffixes RUN_NAME, SAVE_FOLDER, and is also
+# passed as --init_seed so the model RNG differs across replications. A3's
+# data is identical across replications (txt360_ams is deterministic), so
+# DATASET_PATH does NOT change with SEED — only RUN_NAME, SAVE_FOLDER, and
+# init_seed change. For Q2 (paired control), regenerate
+# txt360_random_seed${SEED}.jsonl on the fcanalysis side and re-run
+# prepare_phase2_q2_data.sh + train_phase2_q2_leonardo.sh with the same SEED.
+#
+# Prerequisites:
+#   1. Prepare tokenized data: sbatch prepare_phase2_a3_data.sh   (run once)
+#   2. OLMo-core checkpoint must be available
+#
+# Usage:
+#   mkdir -p logs
+#   sbatch train_phase2_a3_leonardo.sh                   # default (init_seed=33333)
+#   SEED=42 sbatch train_phase2_a3_leonardo.sh            # replication k=42
+#   SEED=7  sbatch train_phase2_a3_leonardo.sh            # replication k=7
+#   SEED=13 sbatch train_phase2_a3_leonardo.sh            # replication k=13
+
+set -euo pipefail
+
+# --- Paths ---
+WORK_DIR="${WORK}/ytahtah0"
+OLMOCORE_PATH="${OLMOCORE_PATH:-/leonardo/home/userexternal/ytahtah0/OLMo-core}"
+DATASET_PATH="${DATASET_PATH:-${WORK_DIR}/data/phase2_a3_tokenized}"
+BASE_CKPT="${BASE_CKPT:-${WORK_DIR}/models/OLMo-3-7B-Think-SFT-olmocore/model_and_optim}"
+
+# K-replication: SEED unset → no suffix, init_seed=33333 (default).
+# SEED=N → RUN_NAME suffix _seedN, SAVE_FOLDER suffix _seedN, init_seed=N.
+SEED="${SEED:-}"
+SEED_SUFFIX="${SEED:+_seed${SEED}}"
+INIT_SEED="${INIT_SEED:-${SEED:-33333}}"
+
+# Training config — FC-only recipe
+RUN_NAME="${RUN_NAME:-phase2_a3_fc_sft${SEED_SUFFIX}}"
+LEARNING_RATE="${LEARNING_RATE:-5e-5}"
+SEQ_LEN="${SEQ_LEN:-32768}"
+MAX_EPOCHS="${MAX_EPOCHS:-1}"
+GLOBAL_BATCH_SIZE="${GLOBAL_BATCH_SIZE:-262144}"  # 256K tokens
+GPUS_PER_NODE=4
+SAVE_FOLDER="${SAVE_FOLDER:-${WORK_DIR}/checkpoints/${RUN_NAME}}"
+
+# HuggingFace offline
+export HF_HOME="${WORK_DIR}/.cache/huggingface"
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+
+# OLMo-core needs to be on PYTHONPATH
+export PYTHONPATH="${OLMOCORE_PATH}/src:${PYTHONPATH:-}"
+
+# Shared filesystem flag (required by OLMo-core for local checkpointing)
+export OLMO_SHARED_FS=1
+
+# GPU memory optimization
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export OMP_NUM_THREADS=4
+
+# WandB offline mode (compute nodes have no internet)
+export WANDB_MODE=offline
+
+# Activate OLMo-core venv
+source "${OLMOCORE_PATH}/.venv/bin/activate"
+
+# --- Multi-node torchrun setup ---
+export MASTER_ADDR
+MASTER_ADDR=$(scontrol show hostname "$SLURM_JOB_NODELIST" | head -n 1)
+export MASTER_PORT
+MASTER_PORT=$((60000 + SLURM_JOB_ID % 5000))
+
+echo "=== Phase 2 A3: Curated Dolci + TxT360-AMS FC SFT Training (Leonardo) ==="
+echo "Job ID: ${SLURM_JOB_ID}"
+echo "Nodes: ${SLURM_NNODES}"
+echo "GPUs per node: ${GPUS_PER_NODE}"
+echo "Master: ${MASTER_ADDR}:${MASTER_PORT}"
+echo "OLMo-core: ${OLMOCORE_PATH}"
+echo "Dataset: ${DATASET_PATH}"
+echo "Base checkpoint: ${BASE_CKPT}"
+echo "Save folder: ${SAVE_FOLDER}"
+echo "Learning rate: ${LEARNING_RATE}"
+echo "Sequence length: ${SEQ_LEN}"
+echo "Global batch size: ${GLOBAL_BATCH_SIZE} tokens"
+echo "Max epochs: ${MAX_EPOCHS}"
+echo "Init seed: ${INIT_SEED}${SEED_SUFFIX:+  (replication SEED=${SEED})}"
+echo "==========================================================================="
+
+export TRAIN_SCRIPT="${SLURM_SUBMIT_DIR}/Olmo-3-7B-SFT-slurm.py"
+
+mkdir -p "$SAVE_FOLDER"
+
+export GPUS_PER_NODE MASTER_ADDR MASTER_PORT
+export TRAIN_SCRIPT RUN_NAME BASE_CKPT WORK_DIR DATASET_PATH
+export SEQ_LEN GLOBAL_BATCH_SIZE LEARNING_RATE MAX_EPOCHS SAVE_FOLDER INIT_SEED
+
+srun --kill-on-bad-exit=1 bash -c 'exec torchrun \
+    --nnodes="$SLURM_NNODES" \
+    --nproc_per_node="$GPUS_PER_NODE" \
+    --master_addr="$MASTER_ADDR" \
+    --master_port="$MASTER_PORT" \
+    --node_rank="$SLURM_NODEID" \
+    "$TRAIN_SCRIPT" train \
+    "$RUN_NAME" \
+    "$BASE_CKPT" \
+    --root_dir="$WORK_DIR" \
+    --dataset_path="$DATASET_PATH" \
+    --seq_len="$SEQ_LEN" \
+    --num_nodes="$SLURM_NNODES" \
+    --gpus_per_node="$GPUS_PER_NODE" \
+    --global_batch_size="$GLOBAL_BATCH_SIZE" \
+    --lr="$LEARNING_RATE" \
+    --max_epochs="$MAX_EPOCHS" \
+    --save_folder="$SAVE_FOLDER" \
+    --init_seed="$INIT_SEED"'
+
+echo "=== Training complete ==="
+echo "Checkpoints saved to: $SAVE_FOLDER"
