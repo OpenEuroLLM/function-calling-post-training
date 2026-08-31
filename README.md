@@ -2,6 +2,32 @@
 
 # Training Open Instruction-Following Language Models
 
+## OpenEuroLLM snapshot status
+
+This repository is retained as a historical source record for the OpenEuroLLM
+function-calling post-training work. It is not an active training campaign.
+
+- The `qwen35-causal-suite` default branch records the concluded Qwen3.5
+  controlled campaign. Training infrastructure was qualified, but the
+  evaluation audit invalidated the capability measurement. No filtering,
+  capability, or mechanism result is claimed. See
+  [Taskboard issue #352](https://github.com/OpenEuroLLM/Taskboard/issues/352).
+- The `olmo3-phase2` branch and `olmo3-five-source-result-v1` tag record the
+  historical single-training-seed OLMo 3 pilot. That pilot is
+  hypothesis-generating, not causal evidence.
+- No current model checkpoint or processed training dataset release is
+  available from these campaigns.
+
+Current work has moved to the public
+[`fcanalysis`](https://github.com/lightonai/fcanalysis) package, dataset and
+evaluation methodology tracked in
+[Taskboard issue #220](https://github.com/OpenEuroLLM/Taskboard/issues/220),
+and the experimental [`rollouts`](https://github.com/lightonai/rollouts)
+repository.
+
+The remainder of this README is the upstream Open-Instruct documentation
+preserved with the source snapshot.
+
 This repo serves as an open effort on instruction-tuning and post-training popular pretrained language models on publicly available datasets. We release this repo and will keep updating it with:
 
 1. Code for finetuning language models with latest techniques and instruction datasets in a unified format.
